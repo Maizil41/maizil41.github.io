@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Hello World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e1e;
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 1.2rem;
+            overflow: hidden;
+        }
+
+        .terminal {
+            background-color: #000000;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            width: 90%;
+            max-width: 900px;
+            height: 70vh;
+            color: #00ff00;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            background-color: #00ff00;
+            margin-left: 2px;
+            animation: blink 0.7s infinite step-end;
+        }
+
+        @keyframes blink {
+            50% { background-color: transparent; }
+        }
+
+        .code {
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal" id="terminal">
+        <div id="text"></div><span class="cursor"></span>
+        <div id="codeEffect" class="code"></div>
+    </div>
+
+    <script>
+        const messages = [
+            "Hello World, Welcome to my page!",
+        ];
+
+        const typingSpeed = 100;
+        const delayBetweenMessages = 2000;
+        const hackingSpeed = 0.1;
+        const hackingCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-<>";
+
+        let messageIndex = 0;
+        let charIndex = 0;
+        let isHacking = false;
+
+        function type() {
+            const textElement = document.getElementById("text");
+
+            if (charIndex < messages[messageIndex].length) {
+                textElement.textContent += messages[messageIndex][charIndex];
+                charIndex++;
+                setTimeout(type, typingSpeed);
+            } else {
+                messageIndex = (messageIndex + 1) % messages.length;
+                charIndex = 0;
+                setTimeout(startHackingEffect, delayBetweenMessages);
+            }
+        }
+
+        function startHackingEffect() {
+            const codeElement = document.getElementById("codeEffect");
+            codeElement.textContent = "";
+            isHacking = true;
+            generateHackingCode();
+        }
+
+        function generateHackingCode() {
+            if (!isHacking) return;
+
+            const codeElement = document.getElementById("codeEffect");
+            let randomCode = '';
+
+            for (let i = 0; i < 200; i++) {
+                randomCode += hackingCharacters.charAt(Math.floor(Math.random() * hackingCharacters.length));
+            }
+
+            codeElement.textContent += randomCode + '\n';
+
+            const terminal = document.getElementById("terminal");
+            terminal.scrollTop = terminal.scrollHeight;
+
+            if (codeElement.textContent.length > 2000) {
+                codeElement.textContent = codeElement.textContent.substring(1000);
+            }
+
+            setTimeout(generateHackingCode, hackingSpeed);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            type();
+        });
+    </script>
+</body>
+</html>
